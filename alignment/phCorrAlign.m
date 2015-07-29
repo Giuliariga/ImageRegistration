@@ -27,7 +27,13 @@ center = size(pcf)/2 + 1/2; % Image centroid is here
 % mask = sqrt((r-size(pcf,1)/2).^2 + (c-size(pcf,2)/2).^2) > block_outer;
 % pcf(mask) = 0;
 
-% figure; imagesc(pcf); colorbar;
+% make it impossible for the max to be within 5 pixels of the edge
+pcf(1:5,:) = min(pcf(:));
+pcf(:,1:5) = min(pcf(:));
+pcf((end-5):end,:) = min(pcf(:));
+pcf(:,(end-5):end) = min(pcf(:));
+
+figure; imagesc(pcf); colorbar;
 
 [q, idx] = max(pcf(:));
 [r, c] = ind2sub(size(pcf),idx);
